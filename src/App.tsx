@@ -18,7 +18,6 @@ const cars = carsFromServer.map((car) => {
 
 export const App: React.FC = () => {
   const [query, setQuery] = useState('');
-  const [selectId, setSelectId] = (0);
 
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -30,8 +29,7 @@ export const App: React.FC = () => {
 
   const visibleCars = cars.filter(({ brand }) => (handleFilter(brand, query)));
 
-  const handleChangeColorId = (event: ChangeEvent<HTMLOptionElement>) => {
-    setSelectId(event.target.value);
+  const handleChangeColorId = () => {
   };
 
   return (
@@ -51,7 +49,7 @@ export const App: React.FC = () => {
       <table>
         <thead>
           <tr>
-            <th>asd</th>
+            <th>Id</th>
             <th>Brand</th>
             <th>Color</th>
             <th>Rent price</th>
