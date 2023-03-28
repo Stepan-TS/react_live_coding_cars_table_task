@@ -18,18 +18,25 @@ const cars = carsFromServer.map((car) => {
 
 export const App: React.FC = () => {
   const [query, setQuery] = useState('');
+  const [selectedColorId, setSelectedColorId] = useState(0);
 
   const handleChangeQuery = (event: ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
   };
 
-  function handleFilter(str: string, query1: string) {
-    return str.toLocaleLowerCase().includes(query1.toLocaleLowerCase());
-  }
+  const visibleCars = cars.filter((car) => {
+    const carsByBrand
+      = car.brand.toLocaleLowerCase().includes(query.toLocaleLowerCase());
 
-  const visibleCars = cars.filter(({ brand }) => (handleFilter(brand, query)));
+    const carsByColor = car.colorId === selectedColorId;
 
-  const handleChangeColorId = () => {
+    return selectedColorId
+      ? carsByBrand && carsByColor
+      : carsByBrand;
+  });
+
+  const handleChangeColorId = (event: ChangeEvent<HTMLSelectElement>) => {
+    setSelectedColorId(Number(event.target.value));
   };
 
   return (
@@ -40,9 +47,18 @@ export const App: React.FC = () => {
         onChange={handleChangeQuery}
       />
 
-      <select>
+      <select
+        value={selectedColorId}
+        onChange={handleChangeColorId}
+      >
+        <option value={0} disabled>Chose a color</option>
         {colorsFromServer.map((color) => (
-          <option onChange={handleChangeColorId}>{color.name}</option>
+          <option
+            key={color.id}
+            value={color.id}
+          >
+            {color.name}
+          </option>
         ))}
       </select>
 
